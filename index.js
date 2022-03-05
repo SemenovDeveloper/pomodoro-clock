@@ -2,14 +2,16 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      sessionLength: 1500,
-      breakLength: 300,
+      sessionLength: 25,
+      breakLength: 5,
       remainingTime: 1500,
       timerOn: false
     }
     this.timer = this.timer.bind(this);
     this.controlTimer = this.controlTimer.bind(this);
-    this.reset=this.reset.bind(this);
+    this.reset = this.reset.bind(this);
+    this.breakLengthControl = this.breakLengthControl.bind(this);
+    this.sessionLengthControl = this.sessionLengthControl.bind(this);
   }
 
   timer() {
@@ -47,26 +49,65 @@ class App extends React.Component {
       timerOn: false
     })
   }
-  
+
+  breakLengthControl (e) {
+    this.setState({
+      breakLength: 
+        e.target.value === "+"
+        ? this.state.breakLength + 1
+        : this.state.breakLength - 1
+    })
+  }
+
+  sessionLengthControl (e) {
+    this.setState({
+      sessionLength: 
+        e.target.value === "+"
+        ? this.state.sessionLength + 1
+        : this.state.sessionLength - 1
+    })
+  }
+
+  convertTime (value) {
+    const seconds = value % 60;
+    const minutes = Math.floor(value/60);
+    return minutes + ":" + seconds
+  }
+
   render() {
     return (
       <div>
         <h1 className="header">Pomodoro Clock</h1>
         <div id="timer">{this.state.remainingTime}</div>
+        <div>{this.convertTime(this.state.remainingTime)}</div>
         <button ib="timer-toggler" onClick={this.controlTimer}>
           Play/Stop
         </button>
         <button id="reset" onClick={this.reset}>Reset</button>  
-        <Length title={"Break length"} length={this.state.breakLength}/>
-        <Length title={"Session length"} />
+        <Length 
+          title={"Break length"} 
+          length={this.state.breakLength}          
+          lengthControl={this.breakLengthControl}
+        />
+        <Length 
+          title={"Session length"} 
+          length={this.state.sessionLength}
+          lengthControl={this.sessionLengthControl}
+        />       
       </div>
     )
   }
 }
 
-function Length({title, length}) {
+function Length({title, length, lengthControl}) {
+  console.log(length.length)
   return (
-    <div>{title}</div>
+     <div>
+      <h2>{title}</h2>
+      <div>{length < 10 ?  "0" + length + ":" + "00" : length + ":" + "00" }</div>
+      <button onClick={lengthControl} value="+">+</button>
+      <button onClick={lengthControl} value="-">-</button>
+    </div>
   )
 }
 
