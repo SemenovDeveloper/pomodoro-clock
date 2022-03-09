@@ -2,9 +2,10 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      sessionLength: 25,
-      breakLength: 5,
-      remainingTime: 1500,
+      sessionLength: 2,
+      breakLength: 1,
+      remainingTime: 90,
+      sessionType: true,
       timerOn: false
     }
     this.timer = this.timer.bind(this);
@@ -16,9 +17,17 @@ class App extends React.Component {
   }
 
   timer() {
+    const remainingTime = this.state.remainingTime;
+  if(remainingTime > 0){
     this.setState({
       remainingTime: this.state.remainingTime - 1
     })
+   } else {
+    this.setState({
+      remainingTime: this.state.sessionType ? this.state.breakLength * 60 : this.state.sessionLength * 60,
+      sessionType: !this.state.sessionType
+    })
+   }
   };
   
   controlTimer() {
@@ -47,40 +56,55 @@ class App extends React.Component {
       sessionLength: 25,
       breakLength: 5,
       remainingTime: 1500,
+      sessionType: true,
       timerOn: false
     })
   }
 
   breakLengthControl (e) {
-    const breakLength = this.state.breakLength;
-    if(e.target.value === "+"){
-      this.setState({
-        breakLength: breakLength < 30 ? breakLength + 1 : breakLength
-      })    
+    if (this.state.timerOn) {
+      return
     } else {
-      this.setState({
-        breakLength: breakLength > 0 ? breakLength -1 : breakLength
-      })   
+      const breakLength = this.state.breakLength;
+      if(e.target.value === "+" && breakLength < 30){
+        this.setState({
+          breakLength: breakLength + 1,
+          remainingTime: !this.state.sessionType ? (breakLength + 1)*60 : this.state.remainingTime 
+
+        })        
+      } else if (e.target.value === "-" && breakLength >1) {
+        this.setState({
+          breakLength: breakLength - 1,
+          remainingTime: !this.state.sessionType ? (breakLength - 1)*60 : this.state.remainingTime
+        })   
+      }
     }
   }
 
   sessionLengthControl (e) {
-    const sessionLength = this.state.sessionLength;
-    if(e.target.value === "+"){
-      this.setState({
-        sessionLength: sessionLength < 99 ? sessionLength + 1 : sessionLength
-      })    
+    if (this.state.timerOn) {
+      return
     } else {
-      this.setState({
-        sessionLength: sessionLength > 0 ? sessionLength -1 : sessionLength
-      })   
+      const sessionLength = this.state.sessionLength;
+      if(e.target.value === "+" && sessionLength < 99){
+        this.setState({
+          sessionLength: sessionLength + 1,
+          remainingTime: this.state.sessionType ? (sessionLength + 1)*60 : this.state.remainingTime 
+        })    
+      } else if (e.target.value === "-" && sessionLength > 1){
+        this.setState({
+          sessionLength: sessionLength -1,
+          remainingTime: this.state.sessionType ? (sessionLength - 1)*60 : this.state.remainingTime 
+        })   
+      }
     }
   }
 
-
   convertTime(value) {
-    const seconds = value % 60;
-    const minutes = Math.floor(value/60);
+    let seconds = value % 60;
+    let minutes = Math.floor(value/60);
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    minutes = minutes <10 ? "0" + minutes : minutes;
     return minutes + ":" + seconds
   }
 
@@ -88,6 +112,7 @@ class App extends React.Component {
     return (
       <div>
         <h1 className="header">Pomodoro Clock</h1>
+        <h3>{this.state.sessionType ? "Session" : "Break"}</h3>
         <div id="timer">{this.state.remainingTime}</div>
         <div>{this.convertTime(this.state.remainingTime)}</div>
         <button ib="timer-toggler" onClick={this.controlTimer}>
@@ -110,8 +135,7 @@ class App extends React.Component {
   }
 }
 
-function Length({title, length, lengthControl}) {
-  
+function Length({title, length, lengthControl}) {  
   return (
      <div>
       <h2>{title}</h2>
