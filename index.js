@@ -2,11 +2,12 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      sessionLength: 2,
-      breakLength: 1,
-      remainingTime: 90,
+      sessionLength: 25,
+      breakLength: 5,
+      remainingTime: 1500,
       sessionType: true,
-      timerOn: false
+      timerOn: false,
+      audio: new Audio("./src/beep.mp3")
     }
     this.timer = this.timer.bind(this);
     this.controlTimer = this.controlTimer.bind(this);
@@ -14,6 +15,12 @@ class App extends React.Component {
     this.breakLengthControl = this.breakLengthControl.bind(this);
     this.sessionLengthControl = this.sessionLengthControl.bind(this);
     this.convertTime = this.convertTime.bind(this);
+    this.playAudio = this.playAudio.bind(this);
+  }
+
+  playAudio () {
+    this.state.audio.currentTime = 0;
+    this.state.audio.play()
   }
 
   timer() {
@@ -23,13 +30,14 @@ class App extends React.Component {
       remainingTime: this.state.remainingTime - 1
     })
    } else {
+    this.playAudio();
     this.setState({
       remainingTime: this.state.sessionType ? this.state.breakLength * 60 : this.state.sessionLength * 60,
       sessionType: !this.state.sessionType
     })
    }
   };
-  
+
   controlTimer() {
     const second = 1000;
     const timerOn = this.state.timerOn;
@@ -111,9 +119,8 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <h1 className="header">Pomodoro Clock</h1>
+        <h1 className="header">25+5 Clock</h1>
         <h3>{this.state.sessionType ? "Session" : "Break"}</h3>
-        <div id="timer">{this.state.remainingTime}</div>
         <div>{this.convertTime(this.state.remainingTime)}</div>
         <button ib="timer-toggler" onClick={this.controlTimer}>
           Play/Stop
@@ -129,7 +136,7 @@ class App extends React.Component {
           title={"Session length"} 
           length={this.state.sessionLength}
           lengthControl={this.sessionLengthControl}
-        />       
+        />
       </div>
     )
   }
