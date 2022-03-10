@@ -118,27 +118,45 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="wrapper">
         <h1 className="header">25+5 Clock</h1>
-        <h3>{this.state.sessionType ? "Session" : "Break"}</h3>
-        <div id="">{this.convertTime(this.state.remainingTime)}</div>
-        <button ib="timer-toggler" onClick={this.controlTimer}>
-          Play/Stop
-        </button>
-        <button id="reset" onClick={this.reset}>Reset</button>  
-        <Length 
-          title={"Break length"}
-          id={"break-label"} 
-          length={this.state.breakLength}          
-          lengthControl={this.breakLengthControl}
-          convertTime={this.convertTime}
-        />
-        <Length 
-          title={"Session length"} 
-          id={"session-label"} 
-          length={this.state.sessionLength}
-          lengthControl={this.sessionLengthControl}
-        />
+        <div id="timer">                   
+            <a>{this.state.sessionType ? "Session" : "Break"}</a>
+          <div id="display-time">
+            <a id="time-left">{this.convertTime(this.state.remainingTime)}</a>
+            <div>
+            <button ib="play-stop" className="control-buttons" onClick={this.controlTimer}>
+              {this.state.timerOn ? "STOP" : "START"}
+            </button>
+            <button id="reset" className="control-buttons" onClick={this.reset}>RESET</button>
+            </div> 
+          </div>
+        </div> 
+        <div id="length-control">
+          <Length 
+            title={"Break length"}
+            id={"break-label"} 
+            length={this.state.breakLength}          
+            lengthControl={this.breakLengthControl}
+            convertTime={this.convertTime}
+          />
+          <Length 
+            title={"Session length"} 
+            id={"session-label"} 
+            length={this.state.sessionLength}
+            lengthControl={this.sessionLengthControl}
+          />
+        </div>        
+        <div className="footer">
+          <a 
+            id="footer" 
+            target="_blank" 
+            href="https://github.com/SemenovDeveloper"
+          >
+            <i className="fab fa-github-square"></i>
+            by SemenovDeveloper
+          </a>
+        </div>            
       </div>
     )
   }
@@ -146,12 +164,27 @@ class App extends React.Component {
 
 function Length({title, id, length, lengthControl}) {  
   return (
-     <div>
-      <h2 id={id}>{title}</h2>
-      <div>{length < 10 ?  "0" + length + ":" + "00" : length + ":" + "00" }
+     <div className="length-container">
+      <h3 className="length-title">{title}</h3>
+      <div className="length-display">
+        {length < 10 ?  "0" + length + ":" + "00" : length + ":" + "00" }
       </div>
-      <button className="decrement" onClick={lengthControl} value="+">+</button>
-      <button className="decrement" onClick={lengthControl} value="-">-</button>
+      <div className="length-buttons-wrapper">
+        <button 
+          className="increment length-buttons" 
+          onClick={lengthControl} 
+          value="+"
+        >
+          +
+        </button>
+        <button 
+          className="decrement length-buttons" 
+          onClick={lengthControl} 
+          value="-"
+        >
+          -
+        </button>
+      </div>
     </div>
   )
 }
