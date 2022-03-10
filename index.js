@@ -74,7 +74,7 @@ class App extends React.Component {
       return
     } else {
       const breakLength = this.state.breakLength;
-      if(e.target.value === "+" && breakLength < 30){
+      if(e.target.value === "+" && breakLength < 60){
         this.setState({
           breakLength: breakLength + 1,
           remainingTime: !this.state.sessionType ? (breakLength + 1)*60 : this.state.remainingTime 
@@ -94,7 +94,7 @@ class App extends React.Component {
       return
     } else {
       const sessionLength = this.state.sessionLength;
-      if(e.target.value === "+" && sessionLength < 99){
+      if(e.target.value === "+" && sessionLength < 60){
         this.setState({
           sessionLength: sessionLength + 1,
           remainingTime: this.state.sessionType ? (sessionLength + 1)*60 : this.state.remainingTime 
@@ -121,19 +121,21 @@ class App extends React.Component {
       <div>
         <h1 className="header">25+5 Clock</h1>
         <h3>{this.state.sessionType ? "Session" : "Break"}</h3>
-        <div>{this.convertTime(this.state.remainingTime)}</div>
+        <div id="">{this.convertTime(this.state.remainingTime)}</div>
         <button ib="timer-toggler" onClick={this.controlTimer}>
           Play/Stop
         </button>
         <button id="reset" onClick={this.reset}>Reset</button>  
         <Length 
-          title={"Break length"} 
+          title={"Break length"}
+          id={"break-label"} 
           length={this.state.breakLength}          
           lengthControl={this.breakLengthControl}
           convertTime={this.convertTime}
         />
         <Length 
           title={"Session length"} 
+          id={"session-label"} 
           length={this.state.sessionLength}
           lengthControl={this.sessionLengthControl}
         />
@@ -142,14 +144,14 @@ class App extends React.Component {
   }
 }
 
-function Length({title, length, lengthControl}) {  
+function Length({title, id, length, lengthControl}) {  
   return (
      <div>
-      <h2>{title}</h2>
+      <h2 id={id}>{title}</h2>
       <div>{length < 10 ?  "0" + length + ":" + "00" : length + ":" + "00" }
       </div>
-      <button onClick={lengthControl} value="+">+</button>
-      <button onClick={lengthControl} value="-">-</button>
+      <button className="decrement" onClick={lengthControl} value="+">+</button>
+      <button className="decrement" onClick={lengthControl} value="-">-</button>
     </div>
   )
 }
