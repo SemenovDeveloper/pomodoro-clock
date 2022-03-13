@@ -16,12 +16,12 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: red 1px solid;
 }
 
 #timer {
   width: 100%;
   text-align: center;
+  padding: 50px 0;
   a {
     font-size: 1.5rem;
   }
@@ -31,16 +31,9 @@ body {
     justify-content: space-evenly;
     align-items: center;
     a{
-      font-size: 6rem;
+      font-size: 7rem;
     }  
   }
-}
-
-#length-control {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
 }
 
 .length-container {
@@ -51,16 +44,24 @@ body {
   .length-buttons-wrapper{
     display: flex;
   }
-
+  p {
+    font-size: 2.5rem;
+  }
 }
 
+#length-control {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
 button {
   display: inline-block;
   border: none;
   border-radius: 50%;
   margin: 0;
   text-decoration: none;
-  background: #0069ed;
+  background: #12b1bd;
   color: #ffffff;
   font-family: sans-serif;
   cursor: pointer;
@@ -70,9 +71,16 @@ button {
   -moz-appearance: none;
 }
 
-button:hover,
-button:focus {
-  background: #0053ba;
+button > * {
+  pointer-events: none;
+}
+
+#reset{
+  background: crimson;
+}
+
+button:hover {
+  background: #020202;
 }
 
 button:active {
@@ -95,16 +103,16 @@ button:active {
   height: 35px;
   width : 240px;
   text-align: center;
-  border: #0069ed 2px solid;
   border-radius: 5px;
+  margin-top: 40px;
   i {
-    color: #0069ed;
+    color: #12b1bd;
     margin-right: 5px;
   }
   a:active,
   a:hover,
   a {
-    color: #0069ed;
+    color: #12b1bd;
     text-decoration: none;
   }
 }

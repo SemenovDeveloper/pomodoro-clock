@@ -73,6 +73,7 @@ class App extends React.Component {
     if (this.state.timerOn) {
       return
     } else {
+      console.log(this.state, e.target.value)
       const breakLength = this.state.breakLength;
       if(e.target.value === "+" && breakLength < 60){
         this.setState({
@@ -121,11 +122,11 @@ class App extends React.Component {
       <div id="wrapper">
         <h1 className="header">25+5 Clock</h1>
         <div id="timer">                   
-            <a>{this.state.sessionType ? "Session" : "Break"}</a>
+            <h5>Timer type: {this.state.sessionType ? "session" : "break"}</h5>
           <div id="display-time">
             <a id="time-left">{this.convertTime(this.state.remainingTime)}</a>
             <div>
-            <button ib="play-stop" className="control-buttons" onClick={this.controlTimer}>
+            <button ib="start-stop" className="control-buttons" onClick={this.controlTimer}>
               {this.state.timerOn ? "STOP" : "START"}
             </button>
             <button id="reset" className="control-buttons" onClick={this.reset}>RESET</button>
@@ -134,17 +135,17 @@ class App extends React.Component {
         </div> 
         <div id="length-control">
           <Length 
-            title={"Break length"}
-            id={"break-label"} 
+            title={"break length"}
             length={this.state.breakLength}          
             lengthControl={this.breakLengthControl}
             convertTime={this.convertTime}
+            timerOn={this.state.timerOn}
           />
           <Length 
-            title={"Session length"} 
-            id={"session-label"} 
+            title={"session length"} 
             length={this.state.sessionLength}
             lengthControl={this.sessionLengthControl}
+            timerOn={this.state.timerOn}
           />
         </div>        
         <div className="footer">
@@ -162,27 +163,29 @@ class App extends React.Component {
   }
 }
 
-function Length({title, id, length, lengthControl}) {  
+function Length({title, length, lengthControl, timerOn}) {  
   return (
      <div className="length-container">
       <h3 className="length-title">{title}</h3>
-      <div className="length-display">
+      <p className="length-display">
         {length < 10 ?  "0" + length + ":" + "00" : length + ":" + "00" }
-      </div>
+      </p>
       <div className="length-buttons-wrapper">
-        <button 
+        <button
+          style={timerOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
           className="increment length-buttons" 
           onClick={lengthControl} 
           value="+"
         >
-          +
+          <i className="fa-solid fa-chevron-up"></i>
         </button>
         <button 
+          style={timerOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
           className="decrement length-buttons" 
           onClick={lengthControl} 
           value="-"
         >
-          -
+          <i className="fa-solid fa-chevron-down"></i>
         </button>
       </div>
     </div>
