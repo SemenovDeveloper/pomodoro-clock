@@ -122,7 +122,7 @@ class App extends React.Component {
       <div id="container">
         <h1 className="header">25+5 Clock</h1>
         <div id="timer">                   
-            <h5>Timer type: {this.state.sessionType ? "session" : "break"}</h5>
+            <h5>Timer to  {this.state.sessionType ? "work!" : "relax!"}</h5>
           <div id="display-time">
             <a id="time-left">{this.convertTime(this.state.remainingTime)}</a>
             <div>
