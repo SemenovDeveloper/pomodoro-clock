@@ -119,7 +119,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div id="wrapper">
+      <div id="container">
         <h1 className="header">25+5 Clock</h1>
         <div id="timer">                   
             <h5>Timer type: {this.state.sessionType ? "session" : "break"}</h5>
