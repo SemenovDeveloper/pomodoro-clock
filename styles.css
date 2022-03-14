@@ -63,9 +63,6 @@ button {
 button > * {
   pointer-events: none; }
 
-#reset {
-  background: crimson; }
-
 button:hover {
   background: #020202; }
 
@@ -81,6 +78,9 @@ button:active {
   height: 50px;
   width: 50px;
   border-radius: 50%; }
+
+#reset {
+  background: crimson; }
 
 .footer {
   height: 35px;

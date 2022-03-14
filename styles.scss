@@ -55,6 +55,7 @@ body {
   flex-direction: row;
   justify-content: space-evenly;
 }
+
 button {
   display: inline-block;
   border: none;
@@ -73,10 +74,6 @@ button {
 
 button > * {
   pointer-events: none;
-}
-
-#reset{
-  background: crimson;
 }
 
 button:hover {
@@ -98,6 +95,11 @@ button:active {
   width: 50px;
   border-radius: 50%;
 }
+
+#reset{
+  background: crimson;
+}
+
 
 .footer {
   height: 35px;

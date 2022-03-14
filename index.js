@@ -127,7 +127,7 @@ class App extends React.Component {
             <a id="time-left">{this.convertTime(this.state.remainingTime)}</a>
             <div>
             <button ib="start-stop" className="control-buttons" onClick={this.controlTimer}>
-              {this.state.timerOn ? "STOP" : "START"}
+              {this.state.timerOn ? "PAUSE" : "START"}
             </button>
             <button id="reset" className="control-buttons" onClick={this.reset}>RESET</button>
             </div> 
