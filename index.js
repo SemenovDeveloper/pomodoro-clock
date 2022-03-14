@@ -1,14 +1,17 @@
+const audioBeep = new Audio("./src/beep.mp3")
+
+const initialState = {
+  sessionLength: 25,
+  breakLength: 5,
+  remainingTime: 1500,
+  sessionType: true,
+  timerIsOn: false
+}
+
 class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      sessionLength: 25,
-      breakLength: 5,
-      remainingTime: 1500,
-      sessionType: true,
-      timerOn: false,
-      audio: new Audio("./src/beep.mp3")
-    }
+    this.state = initialState;
     this.timer = this.timer.bind(this);
     this.controlTimer = this.controlTimer.bind(this);
     this.reset = this.reset.bind(this);
@@ -19,8 +22,8 @@ class App extends React.Component {
   }
 
   playAudio () {
-    this.state.audio.currentTime = 0;
-    this.state.audio.play()
+    audioBeep.currentTime = 0;
+    audioBeep.play()
   }
 
   timer() {
@@ -40,11 +43,11 @@ class App extends React.Component {
 
   controlTimer() {
     const second = 1000;
-    const timerOn = this.state.timerOn;
-    if(!timerOn ){
+    const timerIsOn = this.state.timerIsOn;
+    if(!timerIsOn ){
       const startTimer = setInterval(this.timer, second);
       this.setState({
-        timerOn: !timerOn 
+        timerIsOn: !timerIsOn 
       })
       localStorage.clear();
       localStorage.setItem('startTimer', startTimer);
@@ -52,7 +55,7 @@ class App extends React.Component {
       const startTimer = localStorage.getItem('startTimer');
       clearInterval(startTimer);
       this.setState({
-        timerOn: !timerOn 
+        timerIsOn: !timerIsOn 
       })
     }
   }
@@ -60,20 +63,13 @@ class App extends React.Component {
   reset() {
     const startTimer = localStorage.getItem('startTimer');
     clearInterval(startTimer);
-    this.setState({
-      sessionLength: 25,
-      breakLength: 5,
-      remainingTime: 1500,
-      sessionType: true,
-      timerOn: false
-    })
+    this.setState(initialState);
   }
 
   breakLengthControl (e) {
-    if (this.state.timerOn) {
+    if (this.state.timerIsOn) {
       return
     } else {
-      console.log(this.state, e.target.value)
       const breakLength = this.state.breakLength;
       if(e.target.value === "+" && breakLength < 60){
         this.setState({
@@ -91,7 +87,7 @@ class App extends React.Component {
   }
 
   sessionLengthControl (e) {
-    if (this.state.timerOn) {
+    if (this.state.timerIsOn) {
       return
     } else {
       const sessionLength = this.state.sessionLength;
@@ -122,12 +118,12 @@ class App extends React.Component {
       <div id="container">
         <h1 className="header">25+5 Clock</h1>
         <div id="timer">                   
-            <h5>Timer to  {this.state.sessionType ? "work!" : "relax!"}</h5>
+            <h5>Timer to  {this.state.sessionType ? "work" : "relax"}!</h5>
           <div id="display-time">
             <a id="time-left">{this.convertTime(this.state.remainingTime)}</a>
             <div>
             <button ib="start-stop" className="control-buttons" onClick={this.controlTimer}>
-              {this.state.timerOn ? "PAUSE" : "START"}
+              {this.state.timerIsOn ? "PAUSE" : "START"}
             </button>
             <button id="reset" className="control-buttons" onClick={this.reset}>RESET</button>
             </div> 
@@ -139,13 +135,13 @@ class App extends React.Component {
             length={this.state.breakLength}          
             lengthControl={this.breakLengthControl}
             convertTime={this.convertTime}
-            timerOn={this.state.timerOn}
+            timerIsOn={this.state.timerIsOn}
           />
           <Length 
             title={"session length"} 
             length={this.state.sessionLength}
             lengthControl={this.sessionLengthControl}
-            timerOn={this.state.timerOn}
+            timerIsOn={this.state.timerIsOn}
           />
         </div>        
         <div className="footer">
@@ -163,7 +159,7 @@ class App extends React.Component {
   }
 }
 
-function Length({title, length, lengthControl, timerOn}) {  
+function Length({title, length, lengthControl, timerIsOn}) {  
   return (
      <div className="length-container">
       <h3 className="length-title">{title}</h3>
@@ -172,7 +168,7 @@ function Length({title, length, lengthControl, timerOn}) {
       </p>
       <div className="length-buttons-wrapper">
         <button
-          style={timerOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
+          style={timerIsOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
           className="increment length-buttons" 
           onClick={lengthControl} 
           value="+"
@@ -180,7 +176,7 @@ function Length({title, length, lengthControl, timerOn}) {
           <i className="fa-solid fa-chevron-up"></i>
         </button>
         <button 
-          style={timerOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
+          style={timerIsOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
           className="decrement length-buttons" 
           onClick={lengthControl} 
           value="-"
