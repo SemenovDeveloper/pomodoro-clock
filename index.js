@@ -30,12 +30,14 @@ class App extends React.Component {
     const remainingTime = this.state.remainingTime;
   if(remainingTime > 0){
     this.setState({
-      remainingTime: this.state.remainingTime - 1
+      remainingTime: remainingTime - 1
     })
    } else {
     this.playAudio();
     this.setState({
-      remainingTime: this.state.sessionType ? this.state.breakLength * 60 : this.state.sessionLength * 60,
+      remainingTime: this.state.sessionType 
+                     ? this.state.breakLength * 60 
+                     : this.state.sessionLength * 60,
       sessionType: !this.state.sessionType
     })
    }
@@ -71,16 +73,21 @@ class App extends React.Component {
       return
     } else {
       const breakLength = this.state.breakLength;
-      if(e.target.value === "+" && breakLength < 60){
+      const mathSign = e.target.value;
+      if(mathSign === "+" && breakLength < 60){
         this.setState({
           breakLength: breakLength + 1,
-          remainingTime: !this.state.sessionType ? (breakLength + 1)*60 : this.state.remainingTime 
+          remainingTime: !this.state.sessionType 
+                         ? (breakLength + 1)*60 
+                         : this.state.remainingTime 
 
         })        
-      } else if (e.target.value === "-" && breakLength >1) {
+      } else if (mathSign === "-" && breakLength > 1) {
         this.setState({
           breakLength: breakLength - 1,
-          remainingTime: !this.state.sessionType ? (breakLength - 1)*60 : this.state.remainingTime
+          remainingTime: !this.state.sessionType 
+                         ? (breakLength - 1)*60 
+                         : this.state.remainingTime
         })   
       }
     }
@@ -91,15 +98,20 @@ class App extends React.Component {
       return
     } else {
       const sessionLength = this.state.sessionLength;
-      if(e.target.value === "+" && sessionLength < 60){
+      const mathSign = e.target.value;
+      if(mathSign === "+" && sessionLength < 60){
         this.setState({
           sessionLength: sessionLength + 1,
-          remainingTime: this.state.sessionType ? (sessionLength + 1)*60 : this.state.remainingTime 
+          remainingTime: this.state.sessionType 
+                         ? (sessionLength + 1)*60 
+                         : this.state.remainingTime 
         })    
-      } else if (e.target.value === "-" && sessionLength > 1){
+      } else if (mathSign === "-" && sessionLength > 1){
         this.setState({
           sessionLength: sessionLength -1,
-          remainingTime: this.state.sessionType ? (sessionLength - 1)*60 : this.state.remainingTime 
+          remainingTime: this.state.sessionType 
+                         ? (sessionLength - 1)*60 
+                         : this.state.remainingTime 
         })   
       }
     }
@@ -109,7 +121,7 @@ class App extends React.Component {
     let seconds = value % 60;
     let minutes = Math.floor(value/60);
     seconds = seconds < 10 ? "0" + seconds : seconds;
-    minutes = minutes <10 ? "0" + minutes : minutes;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
     return minutes + ":" + seconds
   }
 
@@ -134,7 +146,6 @@ class App extends React.Component {
             title={"break length"}
             length={this.state.breakLength}          
             lengthControl={this.breakLengthControl}
-            convertTime={this.convertTime}
             timerIsOn={this.state.timerIsOn}
           />
           <Length 
@@ -168,7 +179,7 @@ function Length({title, length, lengthControl, timerIsOn}) {
       </p>
       <div className="length-buttons-wrapper">
         <button
-          style={timerIsOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
+          style={timerIsOn ? { background:"#e7e7e7"} : { background:"#12b1bd"}}
           className="increment length-buttons" 
           onClick={lengthControl} 
           value="+"
@@ -176,7 +187,7 @@ function Length({title, length, lengthControl, timerIsOn}) {
           <i className="fa-solid fa-chevron-up"></i>
         </button>
         <button 
-          style={timerIsOn ? { background: "#e7e7e7"} : { background: "#12b1bd"}}
+          style={timerIsOn ? { background:"#e7e7e7"} : { background:"#12b1bd"}}
           className="decrement length-buttons" 
           onClick={lengthControl} 
           value="-"
